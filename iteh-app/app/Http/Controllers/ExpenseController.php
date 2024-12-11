@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ExpenseCollection;
+use App\Http\Resources\ExpenseResource;
+use App\Models\Budget;
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ExpenseController extends Controller
 {
@@ -12,9 +16,10 @@ class ExpenseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Budget $budget)
     {
-        //
+        $expenses = $budget->expenses;
+        return new ExpenseCollection($expenses);
     }
 
     /**
@@ -33,9 +38,44 @@ class ExpenseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Budget $budget)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            "amount"=> ['required', 'numeric', 'min:10', 'max:10000'],
+            "category"=> ['required', 'in:in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            "description"=> ['required',''],
+            'date' => [
+                'required',
+                'date',
+                'after_or_equal:2025-01-01', 
+                'before_or_equal:2025-07-18' 
+                ],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        /*
+        $totalIncome = $budget->incomes->sum('amount');*/
+
+        // provera da li novi income prelazi budget limit
+        /*
+        if (($totalIncome + $request->amount) > $budget->limit) {
+            return response()->json([
+                'message' => 'Income exceeds the budget limit.'
+            ], 400);
+        }*/
+
+        $expense = new Expense;
+        $expense->amount = $request->amount;
+        $expense->category = $request->category;
+        $expense->description = $request->description;
+        $expense->date = $request->date;
+        $expense->budget_id = $budget->id;
+        $expense->save();
+
+        return response()->json(['Expense created successfully', new ExpenseResource($expense)]);
     }
 
     /**
@@ -67,9 +107,43 @@ class ExpenseController extends Controller
      * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Expense $expense)
+    public function update(Request $request, Budget $budget, Expense $expense)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            "amount"=> ['required', 'numeric', 'min:10', 'max:10000'],
+            "category"=> ['required', 'in:in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            "description"=> ['required',''],
+            'date' => [
+                'required',
+                'date',
+                'after_or_equal:2025-01-01', 
+                'before_or_equal:2025-07-18' 
+                ],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        /*
+        $totalIncome = $budget->incomes->sum('amount');*/
+
+        // provera da li novi income prelazi budget limit
+        /*
+        if (($totalIncome + $request->amount) > $budget->limit) {
+            return response()->json([
+                'message' => 'Income exceeds the budget limit.'
+            ], 400);
+        }*/
+
+        $expense->amount = $request->amount;
+        $expense->category = $request->category;
+        $expense->description = $request->description;
+        $expense->date = $request->date;
+
+        $expense->save();
+
+        return response()->json(['Expense updated successfully', new ExpenseResource($expense)]);
     }
 
     /**
@@ -78,8 +152,9 @@ class ExpenseController extends Controller
      * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Expense $expense)
+    public function destroy(Budget $budget, Expense $expense)
     {
-        //
+        $expense->delete();
+        return response()->json('Expense successfully deleted');
     }
 }
