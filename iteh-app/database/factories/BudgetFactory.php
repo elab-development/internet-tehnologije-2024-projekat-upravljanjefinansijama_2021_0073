@@ -17,10 +17,14 @@ class BudgetFactory extends Factory
      */
     public function definition()
     {
+        $startDate = $this->faker->dateTimeBetween('-1 year', '+1 year');
+        $endDate = $this->faker->dateTimeBetween($startDate, '+1 year');
+
         return [
             'category'=> $this->faker->randomElement(['Hrana','Stanovanje','Odeca','Kuca','Putovanja']),
             'limit'=> $this->faker->randomFloat(2,10,10000),
-            'period'=> $this->faker->randomElement(['Mesec dana','Nedelju dana','Jedna godina']),
+            'start_date' => $startDate->format('Y-m-d'),
+            'end_date' => $endDate->format('Y-m-d'),
             'user_id'=> User::factory()
         ];
     }

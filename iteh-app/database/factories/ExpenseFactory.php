@@ -22,7 +22,7 @@ class ExpenseFactory extends Factory
             'category'=> $this->faker->randomElement(['Hrana','Stanovanje','Odeca','Kuca','Putovanja']),
             'description'=> $this->faker->sentence,
             'date'=> $this->faker->dateTimeBetween('2025-01-01', '2025-07-18'),
-            'budget_id' => Budget::factory(),
+            'budget_id' => Budget::factory()
         ];
     }
 }

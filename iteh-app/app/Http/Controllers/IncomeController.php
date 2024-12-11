@@ -46,9 +46,12 @@ class IncomeController extends Controller
             'date' => [
                 'required',
                 'date',
-                'after_or_equal:2025-01-01', 
-                'before_or_equal:2025-07-18' 
-                ],
+                function ($attribute, $value, $fail) use ($budget) {
+                    if ($value < $budget->start_date || $value > $budget->end_date) {
+                        $fail("The $attribute must be between the budget's start_date ({$budget->start_date}) and end_date ({$budget->end_date}).");
+                    }
+                }
+            ],
         ]);
 
         if ($validator->fails()) {
@@ -113,9 +116,12 @@ class IncomeController extends Controller
             'date' => [
                 'required',
                 'date',
-                'after_or_equal:2025-01-01', 
-                'before_or_equal:2025-07-18' 
-                ],
+                function ($attribute, $value, $fail) use ($budget) {
+                    if ($value < $budget->start_date || $value > $budget->end_date) {
+                        $fail("The $attribute must be between the budget's start_date ({$budget->start_date}) and end_date ({$budget->end_date}).");
+                    }
+                }
+            ]
         ]);
 
         if ($validator->fails()) {

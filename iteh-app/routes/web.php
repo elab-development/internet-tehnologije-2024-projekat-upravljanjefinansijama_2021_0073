@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/reset-password/{token}', function ($token) {
+    return response()->json([
+        'reset_url' => url('/reset-password/' . $token)
+    ]);
+})->name('password.reset');
+
+

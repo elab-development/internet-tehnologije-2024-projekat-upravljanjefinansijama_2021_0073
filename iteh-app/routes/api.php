@@ -4,7 +4,9 @@ use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\PasswordResetController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +28,11 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class,'login']);
 
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword'])->middleware('guest')->name('password.email');
+Route::post('/reset-password', [PasswordResetController::class,'resetPassword'])->middleware('guest')->name('password.update');
+
+
+
 Route::group(['middleware'=>['auth:sanctum']], function () {
     Route::get('/profile', function(Request $request) {
         return auth()->user();
@@ -34,6 +41,8 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
     Route::resource('/budgets',BudgetController::class);
     Route::resource('budgets.incomes',IncomeController::class);
     Route::resource('budgets.expenses',ExpenseController::class);
+
+    Route::get('/expenses/filter', [ExpenseController::class, "indexFilter"]);
 
     Route::post('/logout', [AuthController::class,'logout']);
 });

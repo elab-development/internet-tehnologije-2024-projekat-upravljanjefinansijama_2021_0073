@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('category');
             $table->decimal('limit', 10, 2);
-            $table->string('period');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
         });
     }

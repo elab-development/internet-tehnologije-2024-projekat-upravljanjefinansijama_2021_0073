@@ -44,7 +44,8 @@ class BudgetController extends Controller
         $validator = Validator::make($request->all(), [
             'category' => ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
             'limit' => ['required', 'numeric', 'min:10', 'max:10000'],
-            'period' => ['required', 'in:Mesec dana,Nedelju dana,Jedna godina'],
+            'start_date' => ['required', 'date', 'before:end_date'],
+            'end_date' => ['required', 'date', 'after:start_date'],
         ]);
 
         if ($validator->fails()) {
@@ -54,7 +55,8 @@ class BudgetController extends Controller
         $budget = new Budget;
         $budget->category = $request->category;
         $budget->limit = $request->limit;
-        $budget->period = $request->period;
+        $budget->start_date = $request->start_date;
+        $budget->end_date = $request->end_date;
         $budget->user_id = auth()->id();
 
 
@@ -102,7 +104,8 @@ class BudgetController extends Controller
         $validator = Validator::make($request->all(), [
             'category' => ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
             'limit' => ['required', 'numeric', 'min:10', 'max:10000'],
-            'period' => ['required', 'in:Mesec dana,Nedelju dana,Jedna godina'],
+            'start_date' => ['required', 'date', 'before:end_date'],
+            'end_date' => ['required', 'date', 'after:start_date'],
         ]);
 
         if ($validator->fails()) {
@@ -111,7 +114,8 @@ class BudgetController extends Controller
 
         $budget->category = $request->category;
         $budget->limit = $request->limit;
-        $budget->period = $request->period;
+        $budget->start_date = $request->start_date;
+        $budget->end_date = $request->end_date;
 
         $budget->save();
 

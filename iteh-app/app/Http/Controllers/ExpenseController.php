@@ -42,14 +42,17 @@ class ExpenseController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "amount"=> ['required', 'numeric', 'min:10', 'max:10000'],
-            "category"=> ['required', 'in:in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            "category"=> ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
             "description"=> ['required',''],
             'date' => [
                 'required',
                 'date',
-                'after_or_equal:2025-01-01', 
-                'before_or_equal:2025-07-18' 
-                ],
+                function ($attribute, $value, $fail) use ($budget) {
+                    if ($value < $budget->start_date || $value > $budget->end_date) {
+                        $fail("The $attribute must be between the budget's start_date ({$budget->start_date}) and end_date ({$budget->end_date}).");
+                    }
+                }
+            ]
         ]);
 
         if ($validator->fails()) {
@@ -111,30 +114,22 @@ class ExpenseController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "amount"=> ['required', 'numeric', 'min:10', 'max:10000'],
-            "category"=> ['required', 'in:in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            "category"=> ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
             "description"=> ['required',''],
             'date' => [
                 'required',
                 'date',
-                'after_or_equal:2025-01-01', 
-                'before_or_equal:2025-07-18' 
-                ],
+                function ($attribute, $value, $fail) use ($budget) {
+                    if ($value < $budget->start_date || $value > $budget->end_date) {
+                        $fail("The $attribute must be between the budget's start_date ({$budget->start_date}) and end_date ({$budget->end_date}).");
+                    }
+                }
+            ],
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
-
-        /*
-        $totalIncome = $budget->incomes->sum('amount');*/
-
-        // provera da li novi income prelazi budget limit
-        /*
-        if (($totalIncome + $request->amount) > $budget->limit) {
-            return response()->json([
-                'message' => 'Income exceeds the budget limit.'
-            ], 400);
-        }*/
 
         $expense->amount = $request->amount;
         $expense->category = $request->category;
@@ -156,5 +151,30 @@ class ExpenseController extends Controller
     {
         $expense->delete();
         return response()->json('Expense successfully deleted');
+    }
+
+    public function indexFilter(Request $request) {
+        $user = auth()->user();
+        $userBudgetIds = $user->budgets->pluck('id')->toArray();
+
+        $query = Expense::query();
+
+        $query->whereIn('budget_id', $userBudgetIds);
+
+        if ($request->has('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->has('min_amount') && $request->has('max_amount')) {
+            $query->whereBetween('amount', [$request->min_amount, $request->max_amount]);
+        }
+
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
+
+        $expenses = $query->paginate(20);
+
+        return response()->json($expenses);
     }
 }

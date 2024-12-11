@@ -20,7 +20,8 @@ class BudgetResource extends JsonResource
             "id"=> $this->resource->id,
             "category"=> $this->resource->category,
             "limit"=> $this->resource->limit,
-            "period"=> $this->resource->period
+            "start_date"=> $this->resource->start_date,
+            "end_date"=> $this->resource->end_date
         ];
 
     }

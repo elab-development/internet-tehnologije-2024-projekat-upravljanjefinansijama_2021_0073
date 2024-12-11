@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -43,4 +47,11 @@ class AuthController extends Controller
 
         return response()->json(['message'=>'Uspesna prijava! Zdravo ' . $user->username . '!', 'access_token'=>$token, 'token_type'=>'Bearer']);
     }
+
+    public function logout(Request $request) {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
 }
