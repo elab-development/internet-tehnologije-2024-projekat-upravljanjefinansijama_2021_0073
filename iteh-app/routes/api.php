@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\IncomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,8 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
     });
 
     Route::resource('/budgets',BudgetController::class);
+    Route::resource('budgets.incomes',IncomeController::class);
+    Route::resource('budgets.expenses',ExpenseController::class);
 
     Route::post('/logout', [AuthController::class,'logout']);
 });

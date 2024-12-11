@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Budget;
 use App\Models\Income;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,9 @@ class IncomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Budget $budget)
     {
-        //
+        $incomes = $budget->incomes;
     }
 
     /**
