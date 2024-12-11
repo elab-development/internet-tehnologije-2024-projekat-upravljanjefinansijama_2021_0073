@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\IncomeCollection;
+use App\Http\Resources\IncomeResource;
 use App\Models\Budget;
 use App\Models\Income;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class IncomeController extends Controller
 {
@@ -16,6 +19,7 @@ class IncomeController extends Controller
     public function index(Budget $budget)
     {
         $incomes = $budget->incomes;
+        return new IncomeCollection($incomes);
     }
 
     /**
@@ -34,9 +38,42 @@ class IncomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Budget $budget)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            "amount"=> ['required', 'numeric', 'min:10', 'max:10000'],
+            "source"=> ['required', 'in:Plata,Bonus,Investicije,Od roditelja,Freelance'],
+            'date' => [
+                'required',
+                'date',
+                'after_or_equal:2025-01-01', 
+                'before_or_equal:2025-07-18' 
+                ],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        /*
+        $totalIncome = $budget->incomes->sum('amount');*/
+
+        // provera da li novi income prelazi budget limit
+        /*
+        if (($totalIncome + $request->amount) > $budget->limit) {
+            return response()->json([
+                'message' => 'Income exceeds the budget limit.'
+            ], 400);
+        }*/
+
+        $income = new Income;
+        $income->amount = $request->amount;
+        $income->date = $request->date;
+        $income->source = $request->source;
+        $income->budget_id = $budget->id;
+        $income->save();
+
+        return response()->json(['Income created successfully', new IncomeResource($income)]);
     }
 
     /**
@@ -68,9 +105,30 @@ class IncomeController extends Controller
      * @param  \App\Models\Income  $income
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Income $income)
+    public function update(Request $request, Budget $budget, Income $income)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            "amount"=> ['required', 'numeric', 'min:10', 'max:10000'],
+            "source"=> ['required', 'in:Plata,Bonus,Investicije,Od roditelja,Freelance'],
+            'date' => [
+                'required',
+                'date',
+                'after_or_equal:2025-01-01', 
+                'before_or_equal:2025-07-18' 
+                ],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $income->amount = $request->amount;
+        $income->date = $request->date;
+        $income->source = $request->source;
+
+        $income->save();
+
+        return response()->json(['Income updated successfully', new IncomeResource($income)]);
     }
 
     /**
@@ -79,8 +137,9 @@ class IncomeController extends Controller
      * @param  \App\Models\Income  $income
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Income $income)
+    public function destroy(Budget $budget, Income $income)
     {
-        //
+        $income->delete();
+        return response()->json('Income successfully deleted');
     }
 }

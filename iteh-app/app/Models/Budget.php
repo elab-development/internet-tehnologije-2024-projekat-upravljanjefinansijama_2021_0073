@@ -26,4 +26,5 @@ class Budget extends Model
     public function incomes() {
         return $this->hasMany(Income::class);
     }
+
 }
