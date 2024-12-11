@@ -17,7 +17,9 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        $budgets = Budget::all();
+        // ulogovani korisnik moze samo svoje budzete videti
+        $user = auth()->user();
+        $budgets = Budget::where("user_id", $user->id)->get();
         return new BudgetCollection($budgets);
     }
 
@@ -69,8 +71,7 @@ class BudgetController extends Controller
      */
     public function show(Budget $budget)
     {
-        $budget_to_show = Budget::find($budget->id);
-        return $budget_to_show;
+        return new BudgetResource($budget);
     }
 
     /**
@@ -93,7 +94,29 @@ class BudgetController extends Controller
      */
     public function update(Request $request, Budget $budget)
     {
-        //
+        // Korisnik moze promeniti samo budget koji je on napravio
+        if ($budget->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized: You can only update your own budgets.'], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'category' => ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            'limit' => ['required', 'numeric', 'min:10', 'max:10000'],
+            'period' => ['required', 'in:Mesec dana,Nedelju dana,Jedna godina'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $budget->category = $request->category;
+        $budget->limit = $request->limit;
+        $budget->period = $request->period;
+
+        $budget->save();
+
+        return response()->json(['Budget updated successfully', new BudgetResource($budget)]);
+
     }
 
     /**
@@ -104,6 +127,8 @@ class BudgetController extends Controller
      */
     public function destroy(Budget $budget)
     {
-        //
+        $budget->delete();
+
+        return response()->json('Budget successfully deleted');
     }
 }
