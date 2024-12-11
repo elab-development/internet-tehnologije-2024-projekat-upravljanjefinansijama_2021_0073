@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BudgetCollection;
+use App\Http\Resources\BudgetResource;
 use App\Models\Budget;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BudgetController extends Controller
 {
@@ -15,7 +18,7 @@ class BudgetController extends Controller
     public function index()
     {
         $budgets = Budget::all();
-        return $budgets;
+        return new BudgetCollection($budgets);
     }
 
     /**
@@ -36,7 +39,26 @@ class BudgetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'category' => ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            'limit' => ['required', 'numeric', 'min:10', 'max:10000'],
+            'period' => ['required', 'in:Mesec dana,Nedelju dana,Jedna godina'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $budget = new Budget;
+        $budget->category = $request->category;
+        $budget->limit = $request->limit;
+        $budget->period = $request->period;
+        $budget->user_id = auth()->id();
+
+
+        $budget->save();
+
+        return response()->json(['Budget created successfully', new BudgetResource($budget)]);
     }
 
     /**
