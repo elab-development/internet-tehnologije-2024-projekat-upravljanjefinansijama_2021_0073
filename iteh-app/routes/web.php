@@ -18,6 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('/forgot-password', 'auth.forgot-password')->middleware('guest')->name('password.request');
 
 
