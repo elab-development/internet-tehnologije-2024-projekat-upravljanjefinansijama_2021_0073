@@ -44,5 +44,8 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
 
     Route::get('/expenses/filter', [ExpenseController::class, "indexFilter"]);
 
+    Route::get('/savings', [BudgetController::class, 'calculateSavings']);
+    Route::get('/expenses/max-category', [BudgetController::class,'getMaxExpenseCategory']);
+
     Route::post('/logout', [AuthController::class,'logout']);
 });

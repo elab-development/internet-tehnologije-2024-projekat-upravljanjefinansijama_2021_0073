@@ -135,4 +135,47 @@ class BudgetController extends Controller
 
         return response()->json('Budget successfully deleted');
     }
+
+    public function calculateSavings() {
+        $user = auth()->user();
+        $savings = 0;
+        foreach ($user->budgets as $budget) {
+            $total_incomes = $budget->incomes->sum('amount') ?? 0;
+            $total_expenses = $budget->expenses->sum('amount') ?? 0;
+
+            $savings += $total_incomes - $total_expenses;
+        }
+
+        return response()->json(['savings'=>$savings], 200);
+    }
+
+    public function getMaxExpenseCategory() {
+        $user = auth()->user();
+
+        $categories = []; 
+
+        foreach ($user->budgets as $budget) {
+            foreach ($budget->expenses as $expense) {
+                // ako kategorija vec postoji u nizu, saberi iznos
+                if (isset($categories[$expense->category])) {
+                    $categories[$expense->category] += $expense->amount;
+                } else {
+                    $categories[$expense->category] = $expense->amount;
+                }
+            }
+        }
+
+        if (empty($categories)) {
+            return response()->json(['message' => 'No expenses found.'], 200);
+        }
+
+        $maxCategory = array_keys($categories, max($categories))[0];
+        $maxAmount = $categories[$maxCategory];
+
+        return response()->json([
+            'category' => $maxCategory,
+            'amount' => $maxAmount
+        ], 200);
+
+    }
 }

@@ -18,10 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/reset-password/{token}', function ($token) {
-    return response()->json([
-        'reset_url' => url('/reset-password/' . $token)
-    ]);
-})->name('password.reset');
+Route::view('/forgot-password', 'auth.forgot-password')->middleware('guest')->name('password.request');
 
 

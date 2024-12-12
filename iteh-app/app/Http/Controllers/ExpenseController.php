@@ -59,16 +59,14 @@ class ExpenseController extends Controller
             return response()->json($validator->errors());
         }
 
-        /*
-        $totalIncome = $budget->incomes->sum('amount');*/
+        $total_expenses = $budget->expenses->sum("amount");
 
-        // provera da li novi income prelazi budget limit
-        /*
-        if (($totalIncome + $request->amount) > $budget->limit) {
+        if ($request->amount + $total_expenses > $budget->limit) {
             return response()->json([
-                'message' => 'Income exceeds the budget limit.'
+                'message' => 'Cannot add expense as it exceeds the budget limit.',
+                'remaining_budget' => ($budget->limit - $total_expenses),
             ], 400);
-        }*/
+        }
 
         $expense = new Expense;
         $expense->amount = $request->amount;
