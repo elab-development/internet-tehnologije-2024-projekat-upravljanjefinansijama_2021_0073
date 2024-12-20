@@ -21,7 +21,7 @@ class BudgetFactory extends Factory
         $endDate = $this->faker->dateTimeBetween($startDate, '+1 year');
 
         return [
-            'category'=> $this->faker->randomElement(['Hrana','Stanovanje','Odeca','Kuca','Putovanja']),
+            'category'=> $this->faker->randomElement(['Hrana','Stanovanje','Ostalo','Kuca','Putovanja']),
             'limit'=> $this->faker->randomFloat(2,10,10000),
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),

@@ -42,7 +42,7 @@ class ExpenseController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "amount"=> ['required', 'numeric', 'min:10', 'max:10000'],
-            "category"=> ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            "category"=> ['required', 'in:Hrana,Stanovanje,Ostalo,Kuca,Putovanja'],
             "description"=> ['required',''],
             'date' => [
                 'required',
@@ -112,7 +112,7 @@ class ExpenseController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "amount"=> ['required', 'numeric', 'min:10', 'max:10000'],
-            "category"=> ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            "category"=> ['required', 'in:Hrana,Stanovanje,Ostalo,Kuca,Putovanja'],
             "description"=> ['required',''],
             'date' => [
                 'required',

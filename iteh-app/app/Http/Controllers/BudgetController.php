@@ -42,7 +42,7 @@ class BudgetController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category' => ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            'category' => ['required', 'in:Hrana,Stanovanje,Ostalo,Kuca,Putovanja'],
             'limit' => ['required', 'numeric', 'min:10', 'max:10000'],
             'start_date' => ['required', 'date', 'before:end_date'],
             'end_date' => ['required', 'date', 'after:start_date'],
@@ -102,7 +102,7 @@ class BudgetController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'category' => ['required', 'in:Hrana,Stanovanje,Odeca,Kuca,Putovanja'],
+            'category' => ['required', 'in:Hrana,Stanovanje,Ostalo,Kuca,Putovanja'],
             'limit' => ['required', 'numeric', 'min:10', 'max:10000'],
             'start_date' => ['required', 'date', 'before:end_date'],
             'end_date' => ['required', 'date', 'after:start_date'],
