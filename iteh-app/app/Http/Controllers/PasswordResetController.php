@@ -36,7 +36,7 @@ class PasswordResetController extends Controller
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8',
         ]);
      
         $status = Password::reset(
@@ -47,7 +47,7 @@ class PasswordResetController extends Controller
                 ])->setRememberToken(Str::random(60));
      
                 $user->save();
-     
+                
                 event(new PasswordReset($user));
             }
         );
