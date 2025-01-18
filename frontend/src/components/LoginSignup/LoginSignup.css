@@ -97,3 +97,8 @@
     background: #eaeaea;
     color: #676767;
 }
+
+.confirm-container {
+    max-width: fit-content;
+    margin-inline: auto;
+}

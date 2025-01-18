@@ -4,6 +4,7 @@ import user_icon from '../Assets/person.png';
 import email_icon from '../Assets/email.png';
 import password_icon from '../Assets/password.png';
 import agent from '../../services/api.js'; // Import API agent
+import { useNavigate } from 'react-router-dom'; 
 
 const LoginPage = () => {
   const [action, setAction] = useState("Sign Up");
@@ -18,6 +19,8 @@ const LoginPage = () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
+  const navigate = useNavigate();
+
   // Funkcija za Login
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,8 +34,9 @@ const LoginPage = () => {
         password: userData.password,
       });
       console.log("Login successful:", response);
-      localStorage.setItem("token", response.token); // Čuvanje JWT tokena
+      localStorage.setItem("access_token", response.access_token); // Čuvanje JWT tokena
       setErrorMessage(""); // Resetovanje poruke o grešci
+      navigate('/');
       alert("Uspešno ste se prijavili!"); // Privremena poruka o uspehu
     } catch (err) {
       console.error("Login error:", err);
@@ -139,7 +143,7 @@ const LoginPage = () => {
         </div>
       </div>
 
-      <div className="submit-container">
+      <div className="confirm-container">
         {action === "Log In" ? (
           <div className="submit" onClick={handleLogin}>Confirm Log In</div>) : (
           <div className="submit" onClick={handleRegister}>Confirm Sign Up</div>

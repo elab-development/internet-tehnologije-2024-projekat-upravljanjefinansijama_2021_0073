@@ -1,12 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './components/LoginSignup/LoginPage';
+import { BrowserRouter, Routes, Route} from "react-router-dom";
+import NavBar from './components/NavBar';
 
 function App() {
   return (
-    <div className="App">
-      <LoginPage />
-    </div>
+    <BrowserRouter className="App">
+      <Routes>
+        <Route path="/authentification" element={<LoginPage />}/>
+        <Route path="/" element={<NavBar />} />
+      </Routes>
+
+    </BrowserRouter>
   );
 }
 
