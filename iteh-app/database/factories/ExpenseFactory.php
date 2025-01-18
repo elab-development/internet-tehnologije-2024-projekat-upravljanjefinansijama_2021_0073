@@ -19,7 +19,7 @@ class ExpenseFactory extends Factory
     {
         return [
             'amount'=> $this->faker->randomFloat(2,10,10000),
-            'category'=> $this->faker->randomElement(['Hrana','Stanovanje','Odeca','Kuca','Putovanja']),
+            'category'=> $this->faker->randomElement(['Hrana','Stanovanje','Ostalo','Kuca','Putovanja']),
             'description'=> $this->faker->sentence,
             'date'=> $this->faker->dateTimeBetween('2025-01-01', '2025-07-18'),
             'budget_id' => Budget::factory()
