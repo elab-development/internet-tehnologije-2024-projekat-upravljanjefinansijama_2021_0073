@@ -38,9 +38,8 @@ const NavBar = () => {
       <div className="navbar-nav">
         <a className="nav-link active" aria-current="page" href="#">Dashboard</a>
         <a className="nav-link" href="#">Expenses</a>
-        <a className="nav-link" href="#">Incomes</a>
+        <a className="nav-link" href="#">Profile</a>
         <a className="nav-link" href="#" onClick={handleLogOut}>Log Out</a>
-        <a className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Disabled</a>
       </div>
     </div>
   </div>
