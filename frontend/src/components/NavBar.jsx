@@ -1,50 +1,71 @@
-import React from 'react'
-import agent from '../services/api'
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, Link } from 'react-router-dom'; // Dodaj Link komponentu
 import axios from 'axios';
 
 const NavBar = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  function handleLogOut() {
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: '/logout',
+      headers: { 
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+      },
+    };
 
-    function handleLogOut() {
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        localStorage.removeItem('access_token');
+        navigate('/authentification');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-        let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: '/logout',
-        headers: { 
-            'Authorization': 'Bearer '+localStorage.getItem("access_token")
-            }
-        };
-        axios.request(config)
-        .then((response) => {
-            console.log(JSON.stringify(response.data));
-            localStorage.removeItem("access_token");
-            navigate('/authentification')
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-  <div className="container-fluid">
-    <a className="navbar-brand" href="#" style={{color: '#3c009d'}}>Navbar</a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse show" id="navbarNavAltMarkup">
-      <div className="navbar-nav">
-        <a className="nav-link active" aria-current="page" href="#">Dashboard</a>
-        <a className="nav-link" href="#">Expenses</a>
-        <a className="nav-link" href="#">Profile</a>
-        <a className="nav-link" href="#" onClick={handleLogOut}>Log Out</a>
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/" style={{ color: '#3c009d' }}>
+          Navbar
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse show" id="navbarNavAltMarkup">
+          <div className="navbar-nav">
+            <Link className="nav-link active" aria-current="page" to="/">
+              Dashboard
+            </Link>
+            <Link className="nav-link" to="/max-expense">
+              Expenses
+            </Link>
+            <Link className="nav-link" to="/savings">
+              Savings
+            </Link>
+            <Link className="nav-link" to="/profile">
+              Profile
+            </Link>
+            <a className="nav-link" href="#" onClick={handleLogOut}>
+              Log Out
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</nav>
-  )
-}
+    </nav>
+  );
+};
 
-export default NavBar
+export default NavBar;

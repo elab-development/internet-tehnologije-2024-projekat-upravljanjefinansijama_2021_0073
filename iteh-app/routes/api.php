@@ -34,8 +34,13 @@ Route::post('/reset-password', [PasswordResetController::class,'resetPassword'])
 
 
 Route::group(['middleware'=>['auth:sanctum']], function () {
-    Route::get('/profile', function(Request $request) {
-        return auth()->user();
+    Route::get('/profile', function (Request $request) {
+        $user = auth()->user();
+        return response()->json([
+            'username' => $user->username,
+            'email' => $user->email,
+            'created_at' => $user->created_at->format('Y-m-d H:i:s'),
+        ]);
     });
 
     Route::resource('/budgets',BudgetController::class);
