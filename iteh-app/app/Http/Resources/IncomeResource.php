@@ -19,7 +19,7 @@ class IncomeResource extends JsonResource
             "id"=> $this->resource->id,
             "amount"=> $this->resource->amount,
             "source"=> $this->resource->source,
-            "date"=> $this->resource->currency,
+            "date"=> $this->resource->date,
             "budget"=> new BudgetResource($this->resource->budget)
         ];
     }

@@ -7,6 +7,7 @@ import Budgets from './components/Budgets';
 import MaxExpense from './components/MaxExpense';
 import Profile from './components/Profile';
 import Savings from './components/Savings';
+import BudgetInfo from './components/BudgetInfo';
 
 function App() {
   return (
@@ -41,7 +42,18 @@ function App() {
               <Savings />
             </>
           }  />
+
+        <Route path="/budgets/:budgetId/info" element={
+          <>
+            <NavBar />
+            <BudgetInfo />
+          </>
+        }  />
+
       </Routes>
+      
+
+  
 
     </BrowserRouter>
   );

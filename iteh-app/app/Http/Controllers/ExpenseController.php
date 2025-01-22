@@ -43,7 +43,7 @@ class ExpenseController extends Controller
         $validator = Validator::make($request->all(), [
             "amount"=> ['required', 'numeric', 'min:10', 'max:10000'],
             "category"=> ['required', 'in:Hrana,Stanovanje,Ostalo,Kuca,Putovanja'],
-            "description"=> ['required',''],
+            "description"=> 'required',
             'date' => [
                 'required',
                 'date',

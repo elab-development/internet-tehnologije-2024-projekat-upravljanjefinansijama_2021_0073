@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const BudgetCard = ({ budget, onDelete, onEdit }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="card" style={{ width: '18rem', margin: '1rem' }}>
+    <div className="card" style={{ width: '18rem', margin: '1rem', cursor:"pointer" }}>
       <div className="card-body">
         <h5 className="card-title">{budget.category}</h5>
         <p className="card-text">
@@ -20,6 +23,14 @@ const BudgetCard = ({ budget, onDelete, onEdit }) => {
         >
           Delete
         </button>
+
+        <button
+          type="button"
+          className="btn btn-info ms-2"
+          onClick={() => navigate(`/budgets/${budget.id}/info`)}
+        >
+          Info
+      </button>
       </div>
     </div>
   );
