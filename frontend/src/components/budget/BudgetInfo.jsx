@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Expenses from "./Expenses";
-import Incomes from "./Incomes";
-import CreateExpenseForm from "./CreateExpenseForm";
-import CreateIncomeForm from "./CreateIncomesForm";
+import Expenses from "../expense/Expenses";
+import Incomes from "../income/Incomes";
+import CreateExpenseForm from "../expense/CreateExpenseForm";
+import CreateIncomeForm from "../income/CreateIncomesForm";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";

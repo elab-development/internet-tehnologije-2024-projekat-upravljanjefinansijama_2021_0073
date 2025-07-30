@@ -1,13 +1,15 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginPage from './components/LoginSignup/LoginPage';
+import LoginPage from './pages/LoginPage';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
-import NavBar from './components/NavBar';
-import Budgets from './components/Budgets';
-import MaxExpense from './components/MaxExpense';
-import Profile from './components/Profile';
-import Savings from './components/Savings';
-import BudgetInfo from './components/BudgetInfo';
+import NavBar from './components/layout/NavBar';
+import Budgets from './components/budget/Budgets';
+import MaxExpense from './components/layout/MaxExpense';
+import Profile from './components/layout/Profile';
+import Savings from './components/layout/Savings';
+import BudgetInfo from './components/budget/BudgetInfo';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
   return (
@@ -49,6 +51,9 @@ function App() {
             <BudgetInfo />
           </>
         }  />
+
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       </Routes>
     </BrowserRouter>

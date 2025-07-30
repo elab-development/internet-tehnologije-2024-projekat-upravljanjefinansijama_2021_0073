@@ -34,7 +34,7 @@ const Profile = () => {
 
   return (
     <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h1 style={{color: 'white'}}>Profile</h1>
+      <h1 style={{color: '#113F67'}}>Profile</h1>
       <img
         src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small_2x/user-profile-icon-free-vector.jpg"
         alt="Profile"

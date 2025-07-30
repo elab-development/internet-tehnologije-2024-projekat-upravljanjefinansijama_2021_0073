@@ -24,7 +24,7 @@ const Savings = () => {
 
   return (
     <div className="container mt-5">
-      <h1 style={{ color: '#3c009d' }}>Savings</h1>
+      <h1 style={{ color: '#113F67' }}>Savings</h1>
       {error ? (
         <p style={{ color: 'red' }}>Error: {error}</p>
       ) : savings !== null ? (

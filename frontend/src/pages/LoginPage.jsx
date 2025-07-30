@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './LoginSignup.css';
-import user_icon from '../Assets/person.png';
-import email_icon from '../Assets/email.png';
-import password_icon from '../Assets/password.png';
-import agent from '../../services/api.js'; // Import API agent
+import user_icon from '../components/Assets/person.png';
+import email_icon from '../components/Assets/email.png';
+import password_icon from '../components/Assets/password.png';
+import agent from '../services/api.js'; // Import API agent
 import { useNavigate } from 'react-router-dom'; 
 
 const LoginPage = () => {

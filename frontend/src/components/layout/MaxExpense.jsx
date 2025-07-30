@@ -33,7 +33,7 @@ const MaxExpense = () => {
   }
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '20px', color: 'white' }}>
+    <div style={{ textAlign: 'center', marginTop: '20px', color: '#113F67' }}>
       <h1>Maximum Expense</h1>
       <p>
         <strong>Category:</strong> {maxExpense.category}

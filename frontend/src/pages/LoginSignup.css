@@ -18,7 +18,7 @@
 }
 
 .text {
-    color: #A3DC9A;
+    color: #113F67;
     font-size: 48px;
     font-weight: 700;
 }
@@ -26,7 +26,7 @@
 .underline {
     width: 61px;
     height: 6px;
-    background: #A3DC9A;
+    background: #34699A;
     border-radius: 9px;
 }
 
@@ -57,14 +57,14 @@
     background: transparent;
     border: none;
     outline: none;
-    color: #FFF9BD;
+    color: #FDF5AA;
     font-size: 19px;
 }
 
 .forgot-password {
     padding-left: 62px;
     margin-top: 27px;
-    color: #DEE791;
+    color: #113F67;
     font-size: 18px;
 }
 
@@ -86,7 +86,7 @@
     width: 220px;
     height: 59px;
     color: #fff;
-    background: #DEE791;
+    background: #113F67;
     border-radius: 50px;
     font-size: 19px;
     font-weight: 700;
@@ -94,7 +94,7 @@
 }
 
 .gray {
-    background: #DEE791;
+    background: #113F67;
     color: #fff;
 }
 
