@@ -156,7 +156,7 @@ const BudgetInfo = () => {
         <div className="col-md-6">
           <h3>Expenses</h3>
           <button
-            className="btn btn-primary mb-3"
+            className="btn btn-info mb-3"
             onClick={() => setShowExpenseForm(true)}
           >
             Create Expense
@@ -172,7 +172,7 @@ const BudgetInfo = () => {
         <div className="col-md-6">
           <h3>Incomes</h3>
           <button
-            className="btn btn-success mb-3"
+            className="btn btn-info mb-3"
             onClick={() => setShowIncomeForm(true)}
           >
             Create Income

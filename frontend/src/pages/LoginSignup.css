@@ -57,7 +57,7 @@
     background: transparent;
     border: none;
     outline: none;
-    color: #FDF5AA;
+    color: "grey";
     font-size: 19px;
 }
 
@@ -69,7 +69,7 @@
 }
 
 .forgot-password span {
-    color: #DEE791;
+    color: #113F67;
     cursor: pointer;
 }
 

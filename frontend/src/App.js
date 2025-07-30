@@ -8,8 +8,8 @@ import MaxExpense from './components/layout/MaxExpense';
 import Profile from './components/layout/Profile';
 import Savings from './components/layout/Savings';
 import BudgetInfo from './components/budget/BudgetInfo';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import ResetPasswordPage from './pages/ResetPasswordPage';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 
 function App() {
   return (
@@ -52,8 +52,9 @@ function App() {
           </>
         }  />
 
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
 
       </Routes>
     </BrowserRouter>
