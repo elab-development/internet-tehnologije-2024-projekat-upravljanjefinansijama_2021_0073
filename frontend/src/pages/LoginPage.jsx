@@ -4,7 +4,7 @@ import user_icon from '../components/Assets/person.png';
 import email_icon from '../components/Assets/email.png';
 import password_icon from '../components/Assets/password.png';
 import agent from '../services/api.js'; // Import API agent
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [action, setAction] = useState("Sign Up");
@@ -37,7 +37,8 @@ const LoginPage = () => {
       localStorage.setItem("access_token", response.access_token); // Čuvanje JWT tokena
       setErrorMessage(""); // Resetovanje poruke o grešci
       navigate('/');
-      alert("Uspešno ste se prijavili!"); // Privremena poruka o uspehu
+      // Zamenite alert sa nekom UI porukom za bolji UX
+      // alert("Uspešno ste se prijavili!");
     } catch (err) {
       console.error("Login error:", err);
       setErrorMessage("Neuspešan login. Proverite svoje podatke.");
@@ -59,14 +60,19 @@ const LoginPage = () => {
       console.log("Registration successful:", response);
       setErrorMessage(""); // Resetovanje poruke o grešci
       setAction("Log In"); // Automatsko prebacivanje na login
-      alert("Uspešno ste se registrovali!"); // Privremena poruka o uspehu
+      // Zamenite alert sa nekom UI porukom za bolji UX
+      // alert("Uspešno ste se registrovali!");
     } catch (err) {
       console.error("Registration error:", err);
       setErrorMessage("Registracija nije uspela. Proverite svoje podatke.");
     }
   };
 
-  
+  // Nova funkcija za navigaciju na Forgot Password stranicu
+  const handleForgotPasswordClick = () => {
+    navigate('/forgot-password'); // Pretpostavlja da je ruta za ForgotPassword komponentu '/forgot-password'
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -116,7 +122,7 @@ const LoginPage = () => {
 
       {action === "Log In" && (
         <div className="forgot-password">
-          Forgot Password? <span>Click Here</span>
+          Forgot Password? <span onClick={handleForgotPasswordClick}>Click Here</span>
         </div>
       )}
 

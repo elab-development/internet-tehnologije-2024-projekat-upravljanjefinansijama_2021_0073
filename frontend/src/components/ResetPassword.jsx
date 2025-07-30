@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom'; // Pretpostavljam da koristite react-router
+import { useParams, useNavigate } from 'react-router-dom'; // Pretpostavljam da koristite react-router
 
 const ResetPassword = () => {
     const { token } = useParams(); // Dobijanje tokena iz URL-a
@@ -9,18 +9,24 @@ const ResetPassword = () => {
     const [password_confirmation, setPasswordConfirmation] = useState('');
     const [message, setMessage] = useState('');
 
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/reset-password', {
-                email,
+            const response = await axios.post('/reset-password', {
                 token,
+                email,
                 password,
-                password_confirmation,
+                password_confirmation
             });
             setMessage(response.data.message);
+            setTimeout(() => {
+            navigate('/authentification');
+            }, 1500); 
         } catch (error) {
-            setMessage('Error resetting password.');
+            console.error(error);
+            setMessage(error.response?.data?.message || "Error resetting password.");
         }
     };
 
