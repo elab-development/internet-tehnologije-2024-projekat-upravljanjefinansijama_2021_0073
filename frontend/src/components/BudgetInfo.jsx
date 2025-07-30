@@ -79,7 +79,54 @@ const BudgetInfo = () => {
       console.error("Error creating expense:", error);
     }
   };
+  
 
+  const handleUpdateExpense = async (updatedExpense) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await axios.put(
+        `/budgets/${budgetId}/expenses/${updatedExpense.id}`,
+        updatedExpense,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      setBudgetDetails((prev) => ({
+        ...prev,
+        expenses: prev.expenses.map((expense) =>
+          expense.id === updatedExpense.id ? { ...response.data } : expense
+        ),
+      }));
+    } catch (error) {
+      console.error("Error updating expense:", error.response?.data || error.message);
+    }
+  };
+  const handleUpdateIncome = async (updatedIncome) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await axios.put(
+        `/budgets/${budgetId}/incomes/${updatedIncome.id}`,
+        updatedIncome,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      setBudgetDetails((prev) => ({
+        ...prev,
+        incomes: prev.incomes.map((income) =>
+          income.id === updatedIncome.id ? { ...response.data } : income
+        ),
+      }));
+    } catch (error) {
+      console.error("Error updating income:", error.response?.data || error.message);
+    }
+  };
   const handleCreateIncome = async (newIncome) => {
     try {
       const token = localStorage.getItem("access_token");
@@ -117,6 +164,8 @@ const BudgetInfo = () => {
           <Expenses
             key={budgetDetails.expenses.length}
             expenses={Array.isArray(budgetDetails.expenses) ? budgetDetails.expenses : []}
+            budgetId={budgetId}
+            onUpdate={handleUpdateExpense}
           />
         </div>
 
@@ -129,7 +178,10 @@ const BudgetInfo = () => {
             Create Income
           </button>
           <Incomes
+            key={budgetDetails.incomes.length}
             incomes={Array.isArray(budgetDetails.incomes) ? budgetDetails.incomes : []}
+            budgetId={budgetId}
+            onUpdate={handleUpdateIncome}
           />
         </div>
       </div>

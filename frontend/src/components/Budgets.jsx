@@ -69,7 +69,7 @@ const Budgets = () => {
 
   return (
     <div>
-      <h1 style={{ color: 'white', fontSize: 36, fontWeight: 700 }}>My Budgets</h1>
+      <h1 style={{ color: 'black', fontSize: 36, fontWeight: 700 }}>My Budgets</h1>
       <button type="button" className="btn btn-light" onClick={() => setIsCreateFormOpen(true)}>
         Create Budget
       </button>

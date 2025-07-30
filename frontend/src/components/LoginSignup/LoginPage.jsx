@@ -44,7 +44,6 @@ const LoginPage = () => {
     }
   };
 
-  // Funkcija za Register
   const handleRegister = async (e) => {
     e.preventDefault();
     if (!userData.username || !userData.email || !userData.password) {
