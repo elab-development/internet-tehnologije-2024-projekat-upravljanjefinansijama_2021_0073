@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../Shared.css';
 
 const MaxExpense = () => {
   const [maxExpense, setMaxExpense] = useState(null);
@@ -15,7 +16,7 @@ const MaxExpense = () => {
           });
         setMaxExpense(response.data);
       } catch (error) {
-        console.error('Error fetching max expense:', error);
+        console.error('Greška pri dohvatanju maksimalnog troška:', error);
       } finally {
         setLoading(false);
       }
@@ -24,23 +25,22 @@ const MaxExpense = () => {
     fetchMaxExpense();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!maxExpense || !maxExpense.category) {
-    return <div style={{color: 'white'}}>No expenses found.</div>;
-  }
-
   return (
-    <div style={{ textAlign: 'center', marginTop: '20px', color: '#113F67' }}>
-      <h1>Maximum Expense</h1>
-      <p>
-        <strong>Category:</strong> {maxExpense.category}
-      </p>
-      <p>
-        <strong>Amount:</strong> ${maxExpense.amount}
-      </p>
+    <div className="page-container">
+      <h1 className="page-title">Maksimalni Trošak</h1>
+      <div className="content-card stats-card">
+         {loading ? (
+            <p>Učitavanje...</p>
+         ) : !maxExpense || !maxExpense.category ? (
+            <p>Nema unetih troškova.</p>
+         ) : (
+            <>
+                <h2>Kategorija sa najvećim troškom:</h2>
+                <p style={{fontSize: '2rem', fontWeight: '600', margin: '10px 0'}}>{maxExpense.category}</p>
+                <p className="amount">${parseFloat(maxExpense.amount).toFixed(2)}</p>
+            </>
+         )}
+      </div>
     </div>
   );
 };

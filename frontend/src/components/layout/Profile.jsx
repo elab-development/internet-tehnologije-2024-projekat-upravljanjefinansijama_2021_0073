@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../Shared.css'
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -9,13 +10,13 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get('/profile', {
-            headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-            },
-          });
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+          },
+        });
         setUser(response.data);
       } catch (error) {
-        console.error('Error fetching profile:', error);
+        console.error('Greška pri dohvatanju profila:', error);
       } finally {
         setLoading(false);
       }
@@ -25,30 +26,30 @@ const Profile = () => {
   }, []);
 
   if (loading) {
-    return <div style={{color: 'white'}}>Loading...</div>;
+    return <div className="page-container">Učitavanje...</div>;
   }
 
   if (!user) {
-    return <div style={{color: 'white'}}>Error fetching profile.</div>;
+    return <div className="page-container">Greška pri dohvatanju profila.</div>;
   }
 
+  const formattedDate = new Date(user.created_at).toLocaleDateString('sr-RS');
+
   return (
-    <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h1 style={{color: '#113F67'}}>Profile</h1>
-      <img
-        src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small_2x/user-profile-icon-free-vector.jpg"
-        alt="Profile"
-        style={{ borderRadius: '50%', marginBottom: '20px', width: 200, height: 200 }}
-      />
-      <p style={{color: 'white'}}>
-        <strong >Username:</strong> {user.username}
-      </p>
-      <p style={{color: 'white'}}>
-        <strong>Email:</strong> {user.email}
-      </p>
-      <p style={{color: 'white'}}>
-        <strong>Account Created:</strong> {user.created_at}
-      </p>
+    <div className="page-container">
+      <h1 className="page-title">Profil</h1>
+      <div className="content-card profile-card">
+        <img
+          src="https://i.pravatar.cc/150" 
+          alt="Profile"
+          className="profile-avatar"
+        />
+        <div className="profile-info">
+          <p><strong>Korisničko ime:</strong> {user.username}</p>
+          <p><strong>Email:</strong> {user.email}</p>
+          <p><strong>Nalog kreiran:</strong> {formattedDate}</p>
+        </div>
+      </div>
     </div>
   );
 };

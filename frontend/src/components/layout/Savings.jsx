@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../Shared.css'; 
 
 const Savings = () => {
   const [savings, setSavings] = useState(null);
@@ -23,15 +24,20 @@ const Savings = () => {
   }, []);
 
   return (
-    <div className="container mt-5">
-      <h1 style={{ color: '#113F67' }}>Savings</h1>
-      {error ? (
-        <p style={{ color: 'red' }}>Error: {error}</p>
-      ) : savings !== null ? (
-        <p>Your total savings: <strong>${savings.toFixed(2)}</strong></p>
-      ) : (
-        <p>Loading savings...</p>
-      )}
+    <div className="page-container">
+      <h1 className="page-title">Ušteđevina</h1>
+      <div className="content-card stats-card">
+        {error ? (
+          <p style={{ color: 'red' }}>Greška: {error}</p>
+        ) : savings !== null ? (
+          <>
+            <h2>Vaša ukupna ušteđevina:</h2>
+            <p className="amount">${savings.toFixed(2)}</p>
+          </>
+        ) : (
+          <p>Učitavanje ušteđevine...</p>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,16 +1,29 @@
+:root {
+  --background-start: #f4f7f6; /* Svetla, skoro bela pozadina */
+  --background-end: #dce7e3;   /* Nežna zeleno-siva za gradijent */
+  --card-bg: #ffffff;          /* Bela boja za kartice */
+  --primary-text: #2c3e50;     /* Tamna, čitljiva boja za tekst */
+  --primary-accent: #3498db;   /* Lepa plava za akcente (dugmići, linkovi) */
+  --danger-color: #e74c3c;     /* Crvena za brisanje */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Blaga senka */
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  /* Koristimo novi, elegantniji font */
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100vh;
-  background: linear-gradient(#58A0C8, #58A0C8);
+  
+  /* Postavljamo lepšu pozadinu */
+  background: linear-gradient(135deg, var(--background-start), var(--background-end));
+  min-height: 100vh; /* Osigurava da pozadina prekriva ceo ekran */
+  color: var(--primary-text);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-

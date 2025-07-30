@@ -3,6 +3,7 @@ import BudgetCard from './BudgetCard';
 import UpdateBudgetForm from './UpdateBudgetForm'; 
 import CreateBudgetForm from './CreateBudgetForm';
 import axios from 'axios';
+import './Budgets.css';
 
 const Budgets = () => {
   const [budgets, setBudgets] = useState([]);
@@ -68,11 +69,16 @@ const Budgets = () => {
   };
 
   return (
-    <div>
-      <h1 style={{ color: '#113F67', fontSize: 36, fontWeight: 700 }}>My Budgets</h1>
-      <button type="button" className="btn btn-light" onClick={() => setIsCreateFormOpen(true)}>
-        Create Budget
-      </button>
+    // Dodajemo kontejner sa novim klasama
+    <div className="budgets-container"> 
+      <div className="header">
+        <h1>My Budgets</h1>
+        <button className="btn-create" onClick={() => setIsCreateFormOpen(true)}>
+          + Create Budget
+        </button>
+      </div>
+
+      {/* Forme za kreiranje i ažuriranje (tvoja postojeća logika) */}
       {isCreateFormOpen && (
         <CreateBudgetForm onCreate={handleCreate} onClose={() => setIsCreateFormOpen(false)} />
       )}
@@ -83,7 +89,9 @@ const Budgets = () => {
           onClose={() => setSelectedBudget(null)}
         />
       )}
-      <div className="row">
+
+      {/* Grid za prikaz budžeta */}
+      <div className="budgets-grid">
         {budgets.map((budget) => (
           <BudgetCard
             key={budget.id}
@@ -92,6 +100,13 @@ const Budgets = () => {
             onEdit={() => setSelectedBudget(budget)} 
           />
         ))}
+      </div>
+      <div className="floating-icons">
+        <span>💸</span>
+        <span>📈</span>
+        <span>💰</span>
+        <span>📊</span>
+        <span>💵</span>
       </div>
     </div>
   );

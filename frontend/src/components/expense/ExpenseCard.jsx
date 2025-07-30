@@ -1,24 +1,17 @@
 import React from "react";
+import '../Shared.css';
 
 const ExpenseCard = ({ expense, onDelete, onEdit }) => {
   return (
-    <div className="card mb-3">
-      <div className="card-body">
-        <p className="card-text">Amount: ${expense.amount}</p>
-        <p className="card-text">Description: {expense.description}</p>
-        <p className="card-text">Date: {expense.date}</p>
-        <button
-          className="btn btn-warning me-2"
-          onClick={onEdit} 
-        >
-          Update
-        </button>
-        <button
-          className="btn btn-danger"
-          onClick={() => onDelete(expense.id)}
-        >
-          Delete
-        </button>
+    <div className="item-card">
+      <div className="item-card-content">
+        <p><strong>Iznos:</strong> ${parseFloat(expense.amount).toFixed(2)}</p>
+        <p><strong>Opis:</strong> {expense.description}</p>
+        <p><strong>Datum:</strong> {new Date(expense.date).toLocaleDateString('sr-RS')}</p>
+      </div>
+      <div className="item-card-actions">
+        <button className="btn btn-update" onClick={onEdit}>Izmeni</button>
+        <button className="btn btn-delete" onClick={() => onDelete(expense.id)}>Obriši</button>
       </div>
     </div>
   );
