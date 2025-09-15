@@ -5,7 +5,7 @@ const Button = ({ children, onClick, type = 'button', className = '', disabled =
     <button
       type={type}
       onClick={onClick}
-      className={`btn ${className}`} // Koristi klasu iz tvog postojećeg CSS-a
+      className={`btn ${className}`} 
       disabled={disabled}
     >
       {children}

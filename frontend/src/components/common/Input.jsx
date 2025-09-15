@@ -12,7 +12,7 @@ const Input = ({ label, name, type = 'text', placeholder, value, onChange, requi
         value={value}
         onChange={onChange}
         required={required}
-        className="input-field" // Koristi klasu iz tvog postojećeg CSS-a
+        className="input-field"
       />
     </div>
   );

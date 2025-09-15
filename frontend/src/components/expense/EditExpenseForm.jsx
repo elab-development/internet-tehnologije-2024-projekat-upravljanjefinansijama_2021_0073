@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const EditExpenseForm = ({ expense, onUpdate, onClose }) => {
+const EditExpenseForm = ({ expense, budgetId, onUpdate, onClose }) => {
   const [formData, setFormData] = useState({
     amount: expense.amount,
     description: expense.description,

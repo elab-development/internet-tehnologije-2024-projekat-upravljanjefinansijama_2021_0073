@@ -49,15 +49,16 @@ class ExpenseController extends Controller
                 'date',
                 function ($attribute, $value, $fail) use ($budget) {
                     if ($value < $budget->start_date || $value > $budget->end_date) {
-                        $fail("The $attribute must be between the budget's start_date ({$budget->start_date}) and end_date ({$budget->end_date}).");
+                        $fail("$attribute mora biti između ({$budget->start_date}) i ({$budget->end_date}) budžeta.");
                     }
                 }
             ]
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), 422);
         }
+
 
         $total_expenses = $budget->expenses->sum("amount");
 
@@ -126,7 +127,7 @@ class ExpenseController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), 422);
         }
 
         $expense->amount = $request->amount;

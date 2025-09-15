@@ -2,112 +2,130 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ExpenseCard from "./ExpenseCard";
 import EditExpenseForm from "./EditExpenseForm";
-import '../Shared.css'; 
+import { toast } from 'react-hot-toast';
+import '../Shared.css';
 
-const Expenses = ({ onUpdate }) => {
-  const [expenses, setExpenses] = useState([]);
-  const [filteredExpenses, setFilteredExpenses] = useState([]);
-  const [editingExpense, setEditingExpense] = useState(null);
-  const [filter, setFilter] = useState({
-    category: "",
-    min_amount: "",
-    max_amount: "",
-    start_date: "",
-    end_date: "",
-  });
+const Expenses = ({ expensesProp, budgetId, onUpdate, onDeleteSuccess }) => {
+    const [filteredExpenses, setFilteredExpenses] = useState(expensesProp || []);
+    const [editingExpense, setEditingExpense] = useState(null);
+    const [filter, setFilter] = useState({
+        category: "",
+        min_amount: "",
+        max_amount: "",
+        start_date: "",
+        end_date: "",
+    });
 
-  const fetchExpenses = async () => {
-    try {
-      const token = localStorage.getItem("access_token");
-      const response = await axios.get("/expenses/filter", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setExpenses(response.data.data);
-      setFilteredExpenses(response.data.data);
-    } catch (error) {
-      console.error("Greška pri dohvatanju troškova:", error.response?.data || error.message);
-    }
-  };
+    useEffect(() => {
+        setFilteredExpenses(expensesProp || []);
+    }, [expensesProp]);
 
-  useEffect(() => {
-    fetchExpenses(); 
-  }, []);
+    const handleDeleteExpense = (expenseId) => {
+        const deleteAction = async () => {
+            try {
+                const token = localStorage.getItem("access_token");
+                await axios.delete(`/budgets/${budgetId}/expenses/${expenseId}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                onDeleteSuccess();
+            } catch (error) {
+                console.error("Greška pri brisanju troška:", error);
+                throw error;
+            }
+        };
 
-  const handleDeleteExpense = async (expenseId) => {
-    try {
-      const token = localStorage.getItem("access_token");
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const expenseToDelete = expenses.find(exp => exp.id === expenseId);
-      await axios.delete(`/budgets/${expenseToDelete.budget_id}/expenses/${expenseId}`, config);
-      await fetchExpenses(); 
-    } catch (error) {
-      console.error("Greška pri brisanju troška:", error.response?.data || error.message);
-    }
-  };
+        toast((t) => (
+            <div style={{ textAlign: 'center' }}>
+                <p>Da li ste sigurni da želite da obrišete trošak?</p>
+                <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                    <button className="btn btn-delete" onClick={() => {
+                        toast.dismiss(t.id);
+                        toast.promise(deleteAction(), {
+                            loading: 'Brisanje...',
+                            success: <b>Trošak obrisan!</b>,
+                            error: <b>Greška.</b>
+                        });
+                    }}>
+                        Delete
+                    </button>
+                    <button className="btn btn-secondary" onClick={() => toast.dismiss(t.id)}>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        ), { icon: '⚠️' });
+    };
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilter((prev) => ({ ...prev, [name]: value }));
-  };
+    const handleFilterSubmit = (e) => {
+        e.preventDefault();
+        let tempExpenses = [...expensesProp];
 
-  const handleFilterSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem("access_token");
-      const params = Object.fromEntries(Object.entries(filter).filter(([_, v]) => v !== ""));
-      const response = await axios.get("/expenses/filter", {
-        headers: { Authorization: `Bearer ${token}` },
-        params,
-      });
-      setFilteredExpenses(response.data.data);
-    } catch (error) {
-      console.error("Greška pri filtriranju troškova:", error.response?.data || error.message);
-    }
-  };
+        if (filter.category) {
+            tempExpenses = tempExpenses.filter(exp => exp.category.toLowerCase().includes(filter.category.toLowerCase()));
+        }
+        if (filter.min_amount) {
+            tempExpenses = tempExpenses.filter(exp => parseFloat(exp.amount) >= parseFloat(filter.min_amount));
+        }
+        if (filter.max_amount) {
+            tempExpenses = tempExpenses.filter(exp => parseFloat(exp.amount) <= parseFloat(filter.max_amount));
+        }
+        if (filter.start_date) {
+            tempExpenses = tempExpenses.filter(exp => new Date(exp.date) >= new Date(filter.start_date));
+        }
+        if (filter.end_date) {
+            tempExpenses = tempExpenses.filter(exp => new Date(exp.date) <= new Date(filter.end_date));
+        }
+        
+        setFilteredExpenses(tempExpenses);
+        toast.success('Filter applied!');
+    };
+    
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilter(prev => ({ ...prev, [name]: value }));
+    };
 
-  const clearFilter = () => {
-    setFilter({ category: "", min_amount: "", max_amount: "", start_date: "", end_date: "" });
-    setFilteredExpenses(expenses);
-  };
+    const clearFilter = () => {
+        setFilter({ category: "", min_amount: "", max_amount: "", start_date: "", end_date: "" });
+        setFilteredExpenses(expensesProp); // Vraćamo na originalnu listu iz propsa
+        toast.success('Filter cleared!');
+    };
 
-  return (
-    <div className="column">
-      {/* --- Filter forma --- */}
-      <form onSubmit={handleFilterSubmit} className="filter-form">
-        <input type="text" name="category" value={filter.category} onChange={handleFilterChange} placeholder="Kategorija" className="form-input" />
-        <input type="number" name="min_amount" value={filter.min_amount} onChange={handleFilterChange} placeholder="Min. iznos" className="form-input" />
-        <input type="number" name="max_amount" value={filter.max_amount} onChange={handleFilterChange} placeholder="Max. iznos" className="form-input" />
-        <input type="date" name="start_date" value={filter.start_date} onChange={handleFilterChange} className="form-input" />
-        <input type="date" name="end_date" value={filter.end_date} onChange={handleFilterChange} className="form-input" />
-        <div className="form-actions">
-            <button type="submit" className="btn btn-primary">Filter</button>
-            <button type="button" onClick={clearFilter} className="btn btn-secondary">Očisti</button>
+    return (
+        <div>
+            <form onSubmit={handleFilterSubmit} className="filter-form">
+                <input type="text" name="category" value={filter.category} onChange={handleFilterChange} placeholder="Category" className="form-input" />
+                <input type="number" name="min_amount" value={filter.min_amount} onChange={handleFilterChange} placeholder="Min. amount" className="form-input" />
+                <input type="number" name="max_amount" value={filter.max_amount} onChange={handleFilterChange} placeholder="Max. amount" className="form-input" />
+                <input type="date" name="start_date" value={filter.start_date} onChange={handleFilterChange} className="form-input" />
+                <input type="date" name="end_date" value={filter.end_date} onChange={handleFilterChange} className="form-input" />
+                <div className="form-actions">
+                    <button type="submit" className="btn btn-primary">Filter</button>
+                    <button type="button" onClick={clearFilter} className="btn btn-secondary">Clear</button>
+                </div>
+            </form>
+
+            {filteredExpenses.length === 0 ? (
+                <p>No expenses found for the selected criteria.</p>
+            ) : (
+                filteredExpenses.map((expense) => (
+                    <ExpenseCard key={expense.id} expense={expense} onDelete={handleDeleteExpense} onEdit={() => setEditingExpense(expense)} />
+                ))
+            )}
+
+            {editingExpense && (
+                <EditExpenseForm
+                    expense={editingExpense}
+                    budgetId={budgetId}
+                    onUpdate={(updatedExpense) => {
+                        onUpdate(updatedExpense);
+                        setEditingExpense(null);
+                    }}
+                    onClose={() => setEditingExpense(null)}
+                />
+            )}
         </div>
-      </form>
-
-      {/* --- Prikaz troškova --- */}
-      {filteredExpenses.length === 0 ? (
-        <p>Nema troškova za izabrane kriterijume.</p>
-      ) : (
-        filteredExpenses.map((expense) => (
-          <ExpenseCard key={expense.id} expense={expense} onDelete={handleDeleteExpense} onEdit={() => setEditingExpense(expense)} />
-        ))
-      )}
-
-      {/* --- Forma za izmenu --- */}
-      {editingExpense && (
-        <EditExpenseForm
-          expense={editingExpense}
-          onUpdate={(updatedExpense) => {
-            onUpdate(updatedExpense);
-            fetchExpenses();
-            setEditingExpense(null);
-          }}
-          onClose={() => setEditingExpense(null)}
-        />
-      )}
-    </div>
-  );
+    );
 };
 
 export default Expenses;

@@ -18,5 +18,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/reset-password', function () {
+    $token = request('token');
+    $email = request('email'); 
+    $url = "http://localhost:3000/reset-password/{$token}";
+    if ($email) {
+        $url .= "?email={$email}";
+    }
+    return redirect()->away($url);
+});
+
 
 
