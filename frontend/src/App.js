@@ -10,6 +10,7 @@ import Savings from './components/layout/Savings';
 import BudgetInfo from './components/budget/BudgetInfo';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
+import Breadcrumbs from './components/layout/Breadcrumbs';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           element={
             <>
               <NavBar />
+              <Breadcrumbs />
               <Budgets />
             </>
           } 
@@ -28,12 +30,14 @@ function App() {
         <Route path="/max-expense" element={
             <>
               <NavBar />
+              <Breadcrumbs />
               <MaxExpense />
             </>
           }  />
         <Route path="/profile" element={
             <>
               <NavBar />
+              <Breadcrumbs />
               <Profile />
             </>
           }  />
@@ -41,6 +45,7 @@ function App() {
         <Route path="/savings" element={
             <>
               <NavBar />
+              <Breadcrumbs />
               <Savings />
             </>
           }  />
@@ -48,6 +53,7 @@ function App() {
         <Route path="/budgets/:budgetId/info" element={
           <>
             <NavBar />
+            <Breadcrumbs />
             <BudgetInfo />
           </>
         }  />
