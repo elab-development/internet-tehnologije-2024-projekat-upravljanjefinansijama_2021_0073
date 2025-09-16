@@ -8,6 +8,11 @@ use App\Http\Controllers\PasswordResetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ExchangeController;
+use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,15 +39,27 @@ Route::post('/reset-password', [PasswordResetController::class,'resetPassword'])
 
 
 Route::group(['middleware'=>['auth:sanctum']], function () {
+    // ADMIN
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/users', [AdminController::class, 'usersIndex']);
+        
+    });
+
     Route::get('/profile', function (Request $request) {
         $user = auth()->user();
         return response()->json([
             'username' => $user->username,
             'email' => $user->email,
+            'role' => $user->role,
             'created_at' => $user->created_at->format('Y-m-d H:i:s'),
         ]);
     });
 
+    // Reports & Exchange
+    Route::get('/reports/summary', [ReportController::class, 'summary']);
+    Route::get('/exchange/convert', [ExchangeController::class, 'convert']);
+
+    // Budgets, incomes, expenses
     Route::resource('/budgets',BudgetController::class);
     Route::resource('budgets.incomes',IncomeController::class);
     Route::resource('budgets.expenses',ExpenseController::class);
@@ -51,6 +68,15 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
 
     Route::get('/savings', [BudgetController::class, 'calculateSavings']);
     Route::get('/expenses/max-category', [BudgetController::class,'getMaxExpenseCategory']);
+
+    // Receipts
+    Route::get('/expenses/{expense}/receipts', [ReceiptController::class, 'index']);
+    Route::post('/expenses/{expense}/receipts', [ReceiptController::class, 'store']);
+    Route::delete('/receipts/{id}', [ReceiptController::class, 'destroy']);
+
+    // ✅ Exports
+    Route::get('/exports/expenses.csv', [ExportController::class, 'expensesCsv']);
+    Route::get('/exports/report.pdf',   [ExportController::class, 'reportPdf']);
 
     Route::post('/logout', [AuthController::class,'logout']);
 });

@@ -1,17 +1,17 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import React from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 
 const NavBar = () => {
   const navigate = useNavigate();
 
   function handleLogOut() {
     const config = {
-      method: 'post',
+      method: "post",
       maxBodyLength: Infinity,
-      url: '/logout',
+      url: "/logout",
       headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
     };
 
@@ -19,8 +19,9 @@ const NavBar = () => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        localStorage.removeItem('access_token');
-        navigate('/authentification');
+        localStorage.removeItem("access_token");
+        localStorage.removeItem('role');
+        navigate("/authentification");
       })
       .catch((error) => {
         console.log(error);
@@ -30,8 +31,16 @@ const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
-        {/* Zamenjeno "Navbar" tekst sa SVG ikonicom */}
-        <Link className="navbar-brand" to="/" style={{ color: '#113F67', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Link
+          className="navbar-brand"
+          to="/"
+          style={{
+            color: "#113F67",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -47,7 +56,6 @@ const NavBar = () => {
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
-          {/* Opciono: Možeš dodati i kratak tekst pored ikonice, npr. "Home" ili "BudgetApp" */}
           Home
         </Link>
         <button
@@ -75,6 +83,11 @@ const NavBar = () => {
             <Link className="nav-link" to="/profile">
               Profile
             </Link>
+            {localStorage.getItem("role") === "admin" && (
+              <Link className="nav-link" to="/admin/users">
+                Admin
+              </Link>
+            )}
             <a className="nav-link" href="#" onClick={handleLogOut}>
               Log Out
             </a>

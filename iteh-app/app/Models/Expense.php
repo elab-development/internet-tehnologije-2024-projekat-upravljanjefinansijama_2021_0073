@@ -20,4 +20,7 @@ class Expense extends Model
     public function budget() {
         return $this->belongsTo(Budget::class);
     }
+    public function receipts() { 
+        return $this->hasMany(Receipt::class); 
+    }
 }

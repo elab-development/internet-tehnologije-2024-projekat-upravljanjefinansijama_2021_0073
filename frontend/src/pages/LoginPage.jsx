@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import './LoginSignup.css';
-import user_icon from '../components/Assets/person.png';
-import email_icon from '../components/Assets/email.png';
-import password_icon from '../components/Assets/password.png';
-import agent from '../services/api.js'; // Import API agent
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "./LoginSignup.css";
+import user_icon from "../components/Assets/person.png";
+import email_icon from "../components/Assets/email.png";
+import password_icon from "../components/Assets/password.png";
+import agent from "../services/api.js"; // Import API agent
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginPage = () => {
   const [action, setAction] = useState("Sign Up");
   const [userData, setUserData] = useState({
     username: "",
     email: "",
-    password: ""
+    password: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -35,8 +36,16 @@ const LoginPage = () => {
       });
       console.log("Login successful:", response);
       localStorage.setItem("access_token", response.access_token); // Čuvanje JWT tokena
+
+      const me = await axios.get("/profile", {
+        headers: { Authorization: `Bearer ${response.access_token}` },
+      });
+
+      // 4. Sačuvaj role
+      localStorage.setItem("role", me.data.role || "user");
+
       setErrorMessage(""); // Resetovanje poruke o grešci
-      navigate('/');
+      navigate("/");
       // Zamenite alert sa nekom UI porukom za bolji UX
       // alert("Uspešno ste se prijavili!");
     } catch (err) {
@@ -70,7 +79,7 @@ const LoginPage = () => {
 
   // Nova funkcija za navigaciju na Forgot Password stranicu
   const handleForgotPasswordClick = () => {
-    navigate('/forgot-password'); // Pretpostavlja da je ruta za ForgotPassword komponentu '/forgot-password'
+    navigate("/forgot-password"); // Pretpostavlja da je ruta za ForgotPassword komponentu '/forgot-password'
   };
 
   return (
@@ -122,7 +131,8 @@ const LoginPage = () => {
 
       {action === "Log In" && (
         <div className="forgot-password">
-          Forgot Password? <span onClick={handleForgotPasswordClick}>Click Here</span>
+          Forgot Password?{" "}
+          <span onClick={handleForgotPasswordClick}>Click Here</span>
         </div>
       )}
 
@@ -151,8 +161,13 @@ const LoginPage = () => {
 
       <div className="confirm-container">
         {action === "Log In" ? (
-          <div className="submit" onClick={handleLogin}>Confirm Log In</div>) : (
-          <div className="submit" onClick={handleRegister}>Confirm Sign Up</div>
+          <div className="submit" onClick={handleLogin}>
+            Confirm Log In
+          </div>
+        ) : (
+          <div className="submit" onClick={handleRegister}>
+            Confirm Sign Up
+          </div>
         )}
       </div>
     </div>

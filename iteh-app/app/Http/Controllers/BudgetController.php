@@ -73,6 +73,7 @@ class BudgetController extends Controller
      */
     public function show(Budget $budget)
     {
+        $this->authorize('view', $budget);
         return new BudgetResource($budget);
     }
 
@@ -96,10 +97,7 @@ class BudgetController extends Controller
      */
     public function update(Request $request, Budget $budget)
     {
-        // Korisnik moze promeniti samo budget koji je on napravio
-        if ($budget->user_id !== auth()->id()) {
-            return response()->json(['message' => 'Unauthorized: You can only update your own budgets.'], 403);
-        }
+        $this->authorize('update', $budget);
 
         $validator = Validator::make($request->all(), [
             'category' => ['required', 'in:Hrana,Stanovanje,Ostalo,Kuca,Putovanja'],
@@ -131,6 +129,7 @@ class BudgetController extends Controller
      */
     public function destroy(Budget $budget)
     {
+        $this->authorize('delete', $budget);
         $budget->delete();
 
         return response()->json('Budget successfully deleted');
