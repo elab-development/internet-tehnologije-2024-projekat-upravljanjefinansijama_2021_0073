@@ -8,6 +8,7 @@ use App\Models\Budget;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Support\ReportCache;
 
 class ExpenseController extends Controller
 {
@@ -77,6 +78,8 @@ class ExpenseController extends Controller
         $expense->budget_id = $budget->id;
         $expense->save();
 
+        ReportCache::clearForUser($request->user()->id);
+
         return response()->json(['Expense created successfully', new ExpenseResource($expense)]);
     }
 
@@ -136,6 +139,7 @@ class ExpenseController extends Controller
         $expense->date = $request->date;
 
         $expense->save();
+        ReportCache::clearForUser($request->user()->id);
 
         return response()->json(['Expense updated successfully', new ExpenseResource($expense)]);
     }
@@ -149,6 +153,7 @@ class ExpenseController extends Controller
     public function destroy(Budget $budget, Expense $expense)
     {
         $expense->delete();
+        ReportCache::clearForUser(auth()->user()->id);
         return response()->json('Expense successfully deleted');
     }
 

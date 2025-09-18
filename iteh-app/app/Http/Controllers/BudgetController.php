@@ -7,6 +7,7 @@ use App\Http\Resources\BudgetResource;
 use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Support\ReportCache;
 
 class BudgetController extends Controller
 {
@@ -61,6 +62,7 @@ class BudgetController extends Controller
 
 
         $budget->save();
+        ReportCache::clearForUser($request->user()->id);
 
         return response()->json(['Budget created successfully', new BudgetResource($budget)]);
     }
@@ -117,6 +119,8 @@ class BudgetController extends Controller
 
         $budget->save();
 
+        ReportCache::clearForUser($request->user()->id);
+
         return response()->json(['Budget updated successfully', new BudgetResource($budget)]);
 
     }
@@ -131,6 +135,7 @@ class BudgetController extends Controller
     {
         $this->authorize('delete', $budget);
         $budget->delete();
+        ReportCache::clearForUser(auth()->user()->id);
 
         return response()->json('Budget successfully deleted');
     }

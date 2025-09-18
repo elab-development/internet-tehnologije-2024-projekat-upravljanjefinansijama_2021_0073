@@ -13,6 +13,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\CryptoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,9 +75,12 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
     Route::post('/expenses/{expense}/receipts', [ReceiptController::class, 'store']);
     Route::delete('/receipts/{id}', [ReceiptController::class, 'destroy']);
 
-    // ✅ Exports
+    // Exports
     Route::get('/exports/expenses.csv', [ExportController::class, 'expensesCsv']);
     Route::get('/exports/report.pdf',   [ExportController::class, 'reportPdf']);
+
+    // Crypto
+    Route::get('/crypto/prices', [CryptoController::class, 'prices']);
 
     Route::post('/logout', [AuthController::class,'logout']);
 });

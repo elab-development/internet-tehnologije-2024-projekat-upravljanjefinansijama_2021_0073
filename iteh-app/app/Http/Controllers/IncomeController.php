@@ -8,6 +8,7 @@ use App\Models\Budget;
 use App\Models\Income;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Support\ReportCache;
 
 class IncomeController extends Controller
 {
@@ -77,6 +78,8 @@ class IncomeController extends Controller
         $income->budget_id = $budget->id;
         $income->save();
 
+        ReportCache::clearForUser($request->user()->id);
+
         return response()->json(['Income created successfully', new IncomeResource($income)]);
     }
 
@@ -135,6 +138,7 @@ class IncomeController extends Controller
         $income->source = $request->source;
 
         $income->save();
+        ReportCache::clearForUser($request->user()->id);
 
         return response()->json(['Income updated successfully', new IncomeResource($income)]);
     }
@@ -148,6 +152,7 @@ class IncomeController extends Controller
     public function destroy(Budget $budget, Income $income)
     {
         $income->delete();
+        ReportCache::clearForUser(auth()->user()->id);
         return response()->json('Income successfully deleted');
     }
 }
