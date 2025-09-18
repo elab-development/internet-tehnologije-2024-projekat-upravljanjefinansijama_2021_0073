@@ -36,4 +36,12 @@ class ReceiptController extends Controller {
         $receipt->delete();
         return response()->json(['message' => 'Deleted']);
     }
+
+    public function summary(Request $req, \App\Services\ReportService $service) {
+        $user = $req->user();
+        $from = $req->query('from') ?? now()->subMonths(5)->startOfMonth()->toDateString();
+        $to   = $req->query('to') ?? now()->endOfMonth()->toDateString();
+
+        return $service->summary($user->id, $from, $to);
+    }
 }

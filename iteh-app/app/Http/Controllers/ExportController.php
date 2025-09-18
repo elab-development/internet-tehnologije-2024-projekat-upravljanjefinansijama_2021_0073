@@ -36,23 +36,8 @@ class ExportController extends Controller {
     }
 
     public function reportPdf(Request $req) {
-        $user = $req->user();
-        $from = $req->query('from'); 
-        $to   = $req->query('to');
-
-        if (!$from || !$to) { 
-            $to   = now()->toDateString(); 
-            $from = now()->subMonth()->toDateString(); 
-        }
-
-        // Reuse ReportController logike (bolje izdvojiti u servis)
-        $summary = app(\App\Http\Controllers\ReportController::class)->summary(new Request([
-            'from' => $from,
-            'to'   => $to
-        ] + ['user' => $user]));
-
-        $data = $summary->getData(true);
+        $data = app(ReportController::class)->summary($req);
         $pdf = Pdf::loadView('report', $data);
-        return $pdf->download("report_{$from}_{$to}.pdf");
+        return $pdf->download('report.pdf');
     }
 }

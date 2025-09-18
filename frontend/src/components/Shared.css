@@ -192,3 +192,113 @@
   background-color: var(--danger-color);
   color: white;
 }
+
+/* ===== Tools (FX, Crypto, Export) ===== */
+
+.tools-container {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.tool-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 8px 25px var(--shadow-color);
+  padding: 20px;
+}
+
+.tool-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--background-end);
+  padding-bottom: 10px;
+}
+
+.tool-title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--primary-text);
+  font-weight: 700;
+}
+
+.tool-subtitle {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.tool-form {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+}
+
+.field { grid-column: span 4; }
+.field.w-3 { grid-column: span 3; }
+.field.w-6 { grid-column: span 6; }
+.field.w-12 { grid-column: span 12; }
+
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.input, .select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--background-end);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.95rem;
+  color: var(--primary-text);
+  outline: none;
+  transition: box-shadow .2s, border-color .2s;
+}
+.input:focus, .select:focus {
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, .15);
+}
+
+.tool-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.muted { color:#6b7280; font-size:.9rem; }
+.kpi {
+  display:inline-flex; align-items:center; gap:8px;
+  background: rgba(52,152,219,.08);
+  color: var(--primary-accent);
+  padding: 6px 10px; border-radius: 999px; font-weight:600;
+}
+
+.btn-outline-primary {
+  background: transparent;
+  color: var(--primary-accent);
+  border: 1px solid var(--primary-accent);
+}
+.btn-outline-primary:hover { background: rgba(52,152,219,.08); }
+
+.btn-outline-danger {
+  background: transparent;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+.btn-outline-danger:hover { background: rgba(231,76,60,.08); }
+
+/* responzivnost */
+@media (max-width: 768px) {
+  .field, .field.w-3, .field.w-6, .field.w-12 { grid-column: span 12; }
+}

@@ -12,6 +12,8 @@ import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import Breadcrumbs from './components/layout/Breadcrumbs';
 import AdminUsers from './components/admin/AdminUsers';
+import Analytics from './pages/Analytics';
+import Tools from './pages/Tools';
 
 function App() {
   return (
@@ -63,7 +65,29 @@ function App() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />
 
-      <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/users" element={
+          <>
+            <NavBar />
+            <Breadcrumbs />
+            <AdminUsers />
+          </>
+        } />
+
+        <Route path="/analytics" element={
+          <>
+            <NavBar />
+            <Breadcrumbs />
+            <Analytics />
+          </>
+        } />
+
+        <Route path="/tools" element={
+          <>
+            <NavBar />
+            <Breadcrumbs />
+            <Tools />
+          </>
+        } />
 
       </Routes>
     </BrowserRouter>

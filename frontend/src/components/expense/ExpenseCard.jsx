@@ -1,5 +1,6 @@
 import React from "react";
 import '../Shared.css';
+import ReceiptsWidget from "../ReceiptsWidget";
 
 const ExpenseCard = ({ expense, onDelete, onEdit }) => {
   return (
@@ -13,6 +14,8 @@ const ExpenseCard = ({ expense, onDelete, onEdit }) => {
         <button className="btn btn-update" onClick={onEdit}>Izmeni</button>
         <button className="btn btn-delete" onClick={() => onDelete(expense.id)}>Obriši</button>
       </div>
+
+      <ReceiptsWidget expenseId={expense.id} />
     </div>
   );
 };

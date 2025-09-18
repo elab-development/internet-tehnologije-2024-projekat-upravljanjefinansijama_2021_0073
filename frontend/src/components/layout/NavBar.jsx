@@ -80,6 +80,12 @@ const NavBar = () => {
             <Link className="nav-link" to="/savings">
               Savings
             </Link>
+            <Link className="nav-link" to="/analytics">
+              Analytics
+            </Link>
+            <Link className="nav-link" to="/tools">
+              Tools
+            </Link>
             <Link className="nav-link" to="/profile">
               Profile
             </Link>
