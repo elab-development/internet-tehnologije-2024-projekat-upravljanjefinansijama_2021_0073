@@ -53,9 +53,9 @@ php artisan migrate --seed
 
 # Pokreni server
 php artisan serve
-
-Backend će biti dostupan na: http://localhost:8000/api
 ```
+Backend će biti dostupan na: http://localhost:8000/api
+
 
 ### Frontend (React)
 ```bash
@@ -66,7 +66,7 @@ npm install
 
 # Pokreni React aplikaciju
 npm start
-
-Frontend će biti dostupan na: http://localhost:3000
 ```
+Frontend će biti dostupan na: http://localhost:3000
+
 
