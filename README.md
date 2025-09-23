@@ -58,7 +58,7 @@ Backend će biti dostupan na: http://localhost:8000/api
 ```
 
 ### Frontend (React)
-
+```bash
 cd frontend
 
 # Instaliraj zavisnosti
@@ -68,5 +68,5 @@ npm install
 npm start
 
 Frontend će biti dostupan na: http://localhost:3000
-
+```
 
