@@ -133,6 +133,15 @@ class ExpenseController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        $total_expenses = $budget->expenses->sum("amount");
+
+        if ($request->amount + $total_expenses > $budget->limit) {
+            return response()->json([
+                'message' => 'Trošak ne može biti ažuriran jer premašuje budžet.',
+                'remaining_budget' => ($budget->limit - $total_expenses),
+            ], 400);
+        }
+
         $expense->amount = $request->amount;
         $expense->category = $request->category;
         $expense->description = $request->description;

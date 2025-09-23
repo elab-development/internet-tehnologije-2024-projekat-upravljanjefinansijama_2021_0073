@@ -9,13 +9,33 @@ import { Toaster, toast } from 'react-hot-toast';
 import '../Shared.css';
 
 const getErrorMessage = (error) => {
-    const errors = error.response?.data;
-    if (errors && typeof errors === 'object') {
-        const firstErrorKey = Object.keys(errors)[0];
-        return errors[firstErrorKey][0] || "An unknown validation error occurred.";
+  const data = error.response?.data;
+
+  if (!data) return "Došlo je do greške.";
+
+  if (data.errors && typeof data.errors === "object") {
+    const firstErrorKey = Object.keys(data.errors)[0];
+    return data.errors[firstErrorKey][0] || "Validation error.";
+  }
+
+  if (typeof data === "object") {
+    const firstKey = Object.keys(data)[0];
+    if (Array.isArray(data[firstKey])) {
+      return data[firstKey][0];
     }
-    return error.response?.data?.message || "An unexpected error occurred.";
+  }
+
+  if (data.message) {
+    return data.message;
+  }
+
+  if (typeof data === "string") {
+    return data;
+  }
+
+  return "Nepoznata greška.";
 };
+
 
 
 const BudgetInfo = () => {
@@ -61,7 +81,7 @@ const BudgetInfo = () => {
         toast.promise(promise, {
             loading: 'Dodavanje troška...',
             success: <b>Trošak je uspešno dodat!</b>,
-            error: (err) => <b>{getErrorMessage(err)}</b>,
+            error: (err) => getErrorMessage(err),
         });
 
         try {
@@ -83,7 +103,7 @@ const BudgetInfo = () => {
         toast.promise(promise, {
             loading: 'Ažuriranje troška...',
             success: <b>Trošak je uspešno ažuriran!</b>,
-            error: (err) => <b>{getErrorMessage(err)}</b>, 
+            error: (err) => getErrorMessage(err), 
         });
 
         try {
@@ -102,7 +122,7 @@ const BudgetInfo = () => {
         toast.promise(promise, {
             loading: 'Dodavanje prihoda...',
             success: <b>Prihod je uspešno dodat!</b>,
-            error: (err) => <b>{getErrorMessage(err)}</b>,
+            error: (err) => getErrorMessage(err),
         });
 
         try {
@@ -124,7 +144,7 @@ const BudgetInfo = () => {
         toast.promise(promise, {
             loading: 'Ažuriranje prihoda...',
             success: <b>Prihod je ažuriran!</b>,
-            error: (err) => <b>{getErrorMessage(err)}</b>, 
+            error: (err) => getErrorMessage(err), 
         });
 
         try {

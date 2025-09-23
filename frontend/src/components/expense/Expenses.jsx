@@ -10,7 +10,6 @@ const Expenses = ({ expensesProp, budgetId, onUpdate, onDeleteSuccess }) => {
   const [filteredExpenses, setFilteredExpenses] = useState(expensesProp || []);
   const [editingExpense, setEditingExpense] = useState(null);
   const [filter, setFilter] = useState({
-    category: "",
     min_amount: "",
     max_amount: "",
     start_date: "",
@@ -80,11 +79,6 @@ const Expenses = ({ expensesProp, budgetId, onUpdate, onDeleteSuccess }) => {
     e.preventDefault();
     let tempExpenses = [...expensesProp];
 
-    if (filter.category) {
-      tempExpenses = tempExpenses.filter((exp) =>
-        exp.category.toLowerCase().includes(filter.category.toLowerCase())
-      );
-    }
     if (filter.min_amount) {
       tempExpenses = tempExpenses.filter(
         (exp) => parseFloat(exp.amount) >= parseFloat(filter.min_amount)
@@ -130,14 +124,6 @@ const Expenses = ({ expensesProp, budgetId, onUpdate, onDeleteSuccess }) => {
   return (
     <div>
       <form onSubmit={handleFilterSubmit} className="filter-form">
-        <input
-          type="text"
-          name="category"
-          value={filter.category}
-          onChange={handleFilterChange}
-          placeholder="Category"
-          className="form-input"
-        />
         <input
           type="number"
           name="min_amount"

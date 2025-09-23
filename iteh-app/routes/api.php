@@ -38,6 +38,8 @@ Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword
 Route::post('/reset-password', [PasswordResetController::class,'resetPassword'])->middleware('guest')->name('password.update');
 
 
+Route::get('/crypto/prices', [CryptoController::class, 'prices'])->middleware('throttle:public-apis');
+Route::get('/exchange/convert', [ExchangeController::class, 'convert'])->middleware('throttle:public-apis');
 
 Route::group(['middleware'=>['auth:sanctum']], function () {
     // ADMIN
@@ -58,7 +60,7 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
 
     // Reports & Exchange
     Route::get('/reports/summary', [ReportController::class, 'summary']);
-    Route::get('/exchange/convert', [ExchangeController::class, 'convert'])->middleware('throttle:public-apis');;
+    //Route::get('/exchange/convert', [ExchangeController::class, 'convert'])->middleware('throttle:public-apis');
 
     // Budgets, incomes, expenses
     Route::resource('/budgets',BudgetController::class);
@@ -80,7 +82,7 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
     Route::get('/exports/report.pdf',   [ExportController::class, 'reportPdf']);
 
     // Crypto
-    Route::get('/crypto/prices', [CryptoController::class, 'prices'])->middleware('throttle:public-apis');
+    //Route::get('/crypto/prices', [CryptoController::class, 'prices'])->middleware('throttle:public-apis');
 
     Route::post('/logout', [AuthController::class,'logout']);
 });

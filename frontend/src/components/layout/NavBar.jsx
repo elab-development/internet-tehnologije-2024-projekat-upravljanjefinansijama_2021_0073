@@ -71,37 +71,51 @@ const NavBar = () => {
         </button>
         <div className="collapse navbar-collapse show" id="navbarNavAltMarkup">
           <div className="navbar-nav">
-            <Link className="nav-link active" aria-current="page" to="/">
-              Dashboard
-            </Link>
-            <Link className="nav-link" to="/max-expense">
-              Expenses
-            </Link>
-            <Link className="nav-link" to="/savings">
-              Savings
-            </Link>
-            <Link className="nav-link" to="/analytics">
-              Analytics
-            </Link>
-            <Link className="nav-link" to="/tools">
-              Tools
-            </Link>
-            <Link className="nav-link" to="/profile">
-              Profile
-            </Link>
-            {localStorage.getItem("role") === "admin" && (
-              <Link className="nav-link" to="/admin/users">
-                Admin
-              </Link>
+            {localStorage.getItem("access_token") ? (
+              <>
+                <Link className="nav-link active" aria-current="page" to="/">
+                  Dashboard
+                </Link>
+                <Link className="nav-link" to="/max-expense">
+                  Expenses
+                </Link>
+                <Link className="nav-link" to="/savings">
+                  Savings
+                </Link>
+                <Link className="nav-link" to="/analytics">
+                  Analytics
+                </Link>
+                <Link className="nav-link" to="/tools">
+                  Tools
+                </Link>
+                <Link className="nav-link" to="/profile">
+                  Profile
+                </Link>
+                {localStorage.getItem("role") === "admin" && (
+                  <Link className="nav-link" to="/admin/users">
+                    Admin
+                  </Link>
+                )}
+                <a className="nav-link" href="#" onClick={handleLogOut}>
+                  Log Out
+                </a>
+              </>
+            ) : (
+              <>
+                <Link className="nav-link" to="/tools">
+                  Tools
+                </Link>
+                <Link className="nav-link" to="/authentification">
+                  Login
+                </Link>
+              </>
             )}
-            <a className="nav-link" href="#" onClick={handleLogOut}>
-              Log Out
-            </a>
           </div>
         </div>
       </div>
     </nav>
   );
 };
+
 
 export default NavBar;
