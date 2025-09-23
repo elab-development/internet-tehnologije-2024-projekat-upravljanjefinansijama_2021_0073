@@ -50,7 +50,9 @@ class BudgetController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422); 
         }
 
         $budget = new Budget;
@@ -109,7 +111,9 @@ class BudgetController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422); 
         }
 
         $budget->category = $request->category;

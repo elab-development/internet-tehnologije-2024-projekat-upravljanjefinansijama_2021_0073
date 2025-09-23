@@ -79,7 +79,7 @@ const Budgets = () => {
 
                             toast.promise(deleteBudget(), {
                                 loading: 'Brisanje budžeta...',
-                                success: <b>Budget deleted!</b>,
+                                success: <b>Budžet obrisan!</b>,
                                 error: <b>Neuspelo brisanje budžeta.</b>,
                             });
                         }}

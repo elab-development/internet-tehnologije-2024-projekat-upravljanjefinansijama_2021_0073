@@ -49,7 +49,7 @@ class IncomeController extends Controller
                 'date',
                 function ($attribute, $value, $fail) use ($budget) {
                     if ($value < $budget->start_date || $value > $budget->end_date) {
-                        $fail("The $attribute must be between the budget's start_date ({$budget->start_date}) and end_date ({$budget->end_date}).");
+                        $fail("$attribute mora biti između ({$budget->start_date}) i ({$budget->end_date}) budžeta.");
                     }
                 }
             ],
@@ -80,7 +80,7 @@ class IncomeController extends Controller
 
         ReportCache::clearForUser($request->user()->id);
 
-        return response()->json(['Income created successfully', new IncomeResource($income)]);
+        return response()->json(['Prihod uspešno dodat!', new IncomeResource($income)]);
     }
 
     /**
@@ -140,7 +140,7 @@ class IncomeController extends Controller
         $income->save();
         ReportCache::clearForUser($request->user()->id);
 
-        return response()->json(['Income updated successfully', new IncomeResource($income)]);
+        return response()->json(['Prihod uspešno ažuriran!', new IncomeResource($income)]);
     }
 
     /**
@@ -153,6 +153,6 @@ class IncomeController extends Controller
     {
         $income->delete();
         ReportCache::clearForUser(auth()->user()->id);
-        return response()->json('Income successfully deleted');
+        return response()->json('Prihod uspešno obrisan!');
     }
 }

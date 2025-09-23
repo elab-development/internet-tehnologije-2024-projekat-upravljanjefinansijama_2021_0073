@@ -65,7 +65,7 @@ class ExpenseController extends Controller
 
         if ($request->amount + $total_expenses > $budget->limit) {
             return response()->json([
-                'message' => 'Cannot add expense as it exceeds the budget limit.',
+                'message' => 'Trošak ne može biti kreiran jer premašuje budžet.',
                 'remaining_budget' => ($budget->limit - $total_expenses),
             ], 400);
         }
@@ -80,7 +80,7 @@ class ExpenseController extends Controller
 
         ReportCache::clearForUser($request->user()->id);
 
-        return response()->json(['Expense created successfully', new ExpenseResource($expense)]);
+        return response()->json(['Trošak uspešno kreiran!', new ExpenseResource($expense)]);
     }
 
     /**
@@ -123,7 +123,7 @@ class ExpenseController extends Controller
                 'date',
                 function ($attribute, $value, $fail) use ($budget) {
                     if ($value < $budget->start_date || $value > $budget->end_date) {
-                        $fail("The $attribute must be between the budget's start_date ({$budget->start_date}) and end_date ({$budget->end_date}).");
+                        $fail("$attribute mora biti između ({$budget->start_date}) i ({$budget->end_date}) budžeta.");
                     }
                 }
             ],
@@ -141,7 +141,7 @@ class ExpenseController extends Controller
         $expense->save();
         ReportCache::clearForUser($request->user()->id);
 
-        return response()->json(['Expense updated successfully', new ExpenseResource($expense)]);
+        return response()->json(['Trošak uspešno ažuriran!', new ExpenseResource($expense)]);
     }
 
     /**
@@ -154,7 +154,7 @@ class ExpenseController extends Controller
     {
         $expense->delete();
         ReportCache::clearForUser(auth()->user()->id);
-        return response()->json('Expense successfully deleted');
+        return response()->json('Trošak uspešno obrisan!');
     }
 
     public function indexFilter(Request $request) {

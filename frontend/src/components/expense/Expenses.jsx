@@ -26,8 +26,8 @@ const Expenses = ({ expensesProp, budgetId, onUpdate, onDeleteSuccess }) => {
     setFilteredExpenses(expensesProp || []);
   }, [expensesProp]);
   useEffect(() => {
-    reset(); // kad se promeni filter lista, vrati na stranu 1
-  }, [filter, expensesProp]); // eslint-disable-line
+    reset(); 
+  }, [filter, expensesProp]); 
 
   const handleDeleteExpense = (expenseId) => {
     const deleteAction = async () => {
@@ -107,7 +107,7 @@ const Expenses = ({ expensesProp, budgetId, onUpdate, onDeleteSuccess }) => {
     }
 
     setFilteredExpenses(tempExpenses);
-    toast.success("Filter applied!");
+    toast.success("Filter primenjen!");
   };
 
   const handleFilterChange = (e) => {
@@ -183,7 +183,7 @@ const Expenses = ({ expensesProp, budgetId, onUpdate, onDeleteSuccess }) => {
       </form>
 
       {current.length === 0 ? (
-        <p>No expenses found for the selected criteria.</p>
+        <p>Za dati kriterijum nema troškova.</p>
       ) : (
         current.map((expense) => (
           <ExpenseCard

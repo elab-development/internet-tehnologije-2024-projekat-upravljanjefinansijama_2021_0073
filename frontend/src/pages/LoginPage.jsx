@@ -3,7 +3,7 @@ import "./LoginSignup.css";
 import user_icon from "../components/Assets/person.png";
 import email_icon from "../components/Assets/email.png";
 import password_icon from "../components/Assets/password.png";
-import agent from "../services/api.js"; // Import API agent
+import agent from "../services/api.js"; 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -67,108 +67,115 @@ const LoginPage = () => {
         password: userData.password,
       });
       console.log("Registration successful:", response);
-      setErrorMessage(""); // Resetovanje poruke o grešci
-      setAction("Log In"); // Automatsko prebacivanje na login
-      // Zamenite alert sa nekom UI porukom za bolji UX
-      // alert("Uspešno ste se registrovali!");
+      setErrorMessage(""); 
+      setAction("Log In"); 
     } catch (err) {
       console.error("Registration error:", err);
-      setErrorMessage("Registracija nije uspela. Proverite svoje podatke.");
+
+      if (err.response && err.response.status === 422) {
+        const errors = err.response.data.errors;
+        const allMessages = Object.values(errors).flat().join(" ");
+        setErrorMessage(allMessages);
+      } else {
+        setErrorMessage("Registracija nije uspela. Proverite svoje podatke.");
+      }
     }
   };
 
-  // Nova funkcija za navigaciju na Forgot Password stranicu
   const handleForgotPasswordClick = () => {
-    navigate("/forgot-password"); // Pretpostavlja da je ruta za ForgotPassword komponentu '/forgot-password'
+    navigate("/forgot-password"); 
   };
 
   return (
-    <div className="container">
-      <div className="header">
-        <div className="text">{action}</div>
-        <div className="underline"></div>
-      </div>
+    <div className="auth-page">
+      <div className="auth-card">
 
-      <div className="inputs">
-        {/* Polje za ime prikazuje se samo za "Sign Up" */}
-        {action === "Sign Up" && (
+        <div className="header">
+          <div className="text">{action}</div>
+          <div className="underline"></div>
+        </div>
+
+        <div className="inputs">
+          {/* Polje za ime prikazuje se samo za "Sign Up" */}
+          {action === "Sign Up" && (
+            <div className="input">
+              <img src={user_icon} alt="User Icon" />
+              <input
+                type="text"
+                name="username"
+                placeholder="Name"
+                value={userData.username}
+                onChange={handleInput}
+              />
+            </div>
+          )}
+
           <div className="input">
-            <img src={user_icon} alt="User Icon" />
+            <img src={email_icon} alt="Email Icon" />
             <input
-              type="text"
-              name="username"
-              placeholder="Name"
-              value={userData.username}
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={userData.email}
               onChange={handleInput}
             />
           </div>
-        )}
 
-        <div className="input">
-          <img src={email_icon} alt="Email Icon" />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={userData.email}
-            onChange={handleInput}
-          />
-        </div>
-
-        <div className="input">
-          <img src={password_icon} alt="Password Icon" />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={userData.password}
-            onChange={handleInput}
-          />
-        </div>
-      </div>
-
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-      {action === "Log In" && (
-        <div className="forgot-password">
-          Forgot Password?{" "}
-          <span onClick={handleForgotPasswordClick}>Click Here</span>
-        </div>
-      )}
-
-      <div className="submit-container">
-        <div
-          className={action === "Log In" ? "submit gray" : "submit"}
-          onClick={() => {
-            setAction("Sign Up");
-            setUserData({ username: "", email: "", password: "" });
-            setErrorMessage("");
-          }}
-        >
-          Sign Up
-        </div>
-        <div
-          className={action === "Sign Up" ? "submit gray" : "submit"}
-          onClick={() => {
-            setAction("Log In");
-            setUserData({ username: "", email: "", password: "" });
-            setErrorMessage("");
-          }}
-        >
-          Log In
-        </div>
-      </div>
-
-      <div className="confirm-container">
-        {action === "Log In" ? (
-          <div className="submit" onClick={handleLogin}>
-            Confirm Log In
+          <div className="input">
+            <img src={password_icon} alt="Password Icon" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={userData.password}
+              onChange={handleInput}
+            />
           </div>
-        ) : (
-          <div className="submit" onClick={handleRegister}>
-            Confirm Sign Up
+        </div>
+
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+        {action === "Log In" && (
+          <div className="forgot-password">
+            Forgot Password?{" "}
+            <span onClick={handleForgotPasswordClick}>Click Here</span>
           </div>
         )}
+
+        <div className="submit-container">
+          <div
+            className={action === "Log In" ? "submit gray" : "submit"}
+            onClick={() => {
+              setAction("Sign Up");
+              setUserData({ username: "", email: "", password: "" });
+              setErrorMessage("");
+            }}
+          >
+            Sign Up
+          </div>
+          <div
+            className={action === "Sign Up" ? "submit gray" : "submit"}
+            onClick={() => {
+              setAction("Log In");
+              setUserData({ username: "", email: "", password: "" });
+              setErrorMessage("");
+            }}
+          >
+            Log In
+          </div>
+        </div>
+
+        <div className="confirm-container">
+          {action === "Log In" ? (
+            <div className="submit" onClick={handleLogin}>
+              Confirm Log In
+            </div>
+          ) : (
+            <div className="submit" onClick={handleRegister}>
+              Confirm Sign Up
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

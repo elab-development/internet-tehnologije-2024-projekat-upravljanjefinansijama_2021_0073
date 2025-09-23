@@ -17,8 +17,6 @@ export default function AdminUsers() {
 
   return (
     <>
-      <NavBar />
-      <Breadcrumbs />
       <div className="page-container">
         <h2 className="page-title">Korisnici (admin)</h2>
 
